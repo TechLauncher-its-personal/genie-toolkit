@@ -94,6 +94,7 @@ function tokenize(template : string) {
     return chars.join('').split(' ');
 }
 
+// once we get each of the annotations from here, copy them straight over to requisite proj template
 export default class PosParser {
     private readonly queryTemplates : Record<string, NFA[]>;
 
@@ -128,7 +129,10 @@ export default class PosParser {
                                 { pos: 'reverse_verb_projection', canonical: match.replace('$value ', '') }
                             ];
                         }
-                        return [{ pos, canonical: match }];
+                        return [
+                                { pos, canonical: match },
+                                { pos: pos + '_projection', canonical: match.replace('$value ', '') }
+                            ];
                     }
                 }
             }

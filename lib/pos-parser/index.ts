@@ -123,16 +123,26 @@ export default class PosParser {
                             if (tokens.includes('it') || tokens.includes('that') || tokens.includes('this'))
                                 continue;
                         }
-                        if (pos === 'verb' && match.startsWith('$value ')) {
+                        if (pos === 'verb') {
+                            if (match.startsWith('$value ')) {
+                                return [
+                                    { pos, canonical: match },
+                                    { pos: 'reverse_verb_projection', canonical: match.replace('$value ', '') }
+                                ];
+                            }
                             return [
                                 { pos, canonical: match },
-                                { pos: 'reverse_verb_projection', canonical: match.replace('$value ', '') }
+                                { pos: 'verb_projection', canonical: '$dvalue ' + match.replace('the $value ', '').replace('$value ', '') }
                             ];
                         }
-                        return [
+
+                        if (match.endsWith(' $value')) {
+                            return [
                                 { pos, canonical: match },
-                                { pos: pos + '_projection', canonical: match.replace('$value ', '') }
+                                { pos: pos + '_projection', canonical: '$dvalue ' + match.replace(' $value', '') }
                             ];
+                        }
+                        return [{ pos, canonical: match }];
                     }
                 }
             }

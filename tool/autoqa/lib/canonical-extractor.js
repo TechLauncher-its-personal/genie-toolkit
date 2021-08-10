@@ -288,7 +288,7 @@ export default class AnnotationExtractor {
         if (annotations) {
             for (const annotation of annotations) {
                 canonical[annotation.pos] = canonical[annotation.pos] || [];
-                canonical[annotation.pos].push(annotation.canonical.replace('$value', '#'));
+                canonical[annotation.pos].push(annotation.canonical.replace('$value', '#').replace('$dvalue', '%'));
             }
         }
     }
